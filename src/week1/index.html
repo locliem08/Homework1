@@ -1,0 +1,57 @@
+<html>
+<div id="level">Number Guessing Game - Lv1: 0 - 100</div>
+<div id="message" style="font-weight: bold"></div>
+<input type="number" id="number">
+<button id="guessButton">Guess</button>
+
+</html>
+<script>
+    var lv = 1;
+    var results = Math.floor(Math.random() * (100 * lv));
+    var countLimit = 10;
+    function checkNum() {
+        var userinput = document.getElementById('number').value;
+        var textResults = document.getElementById('message');
+        var textLv = document.getElementById('level');
+        let temp = parseInt(userinput);
+        if (isNaN(temp)) {
+            alert('Số không hợp lệ!', temp);
+            return;
+        } else {
+            countLimit--;
+            if (temp > results) {
+                textResults.textContent = 'Không đúng, số bạn nhập hiện đang lớn hơn. Lượt đoán còn: ' + countLimit;
+                textResults.style.background = 'red';
+            }
+            if (temp < results) {
+                textResults.textContent = 'Không đúng, số bạn nhập hiện đang nhỏ hơn. Lượt đoán còn: ' + countLimit;
+                textResults.style.background = 'aqua';
+            }
+            if (temp == results) {
+                textResults.textContent = 'Win rồi. Bạn pro ghê. Chơi tiếp nhé :D';
+                textResults.style.background = 'white';
+                lv++;
+                results = Math.floor(Math.random() * (100 * lv));
+                textLv.textContent = 'Number Guessing Game - Lv ' + lv + ': 0 - ' + (100 * lv);
+                countLimit = 10;
+                return;
+            }
+
+        }
+
+        if (countLimit == 0) {
+            alert('Bạn đã thua. Chơi lại nhé :P');
+            countLimit = 10;
+            results = Math.floor(Math.random() * (100 * lv));
+            textResults.style.background = 'white';
+            return;
+        }
+    }
+    var button = document.getElementById('guessButton');
+    button.onclick = () => checkNum();
+//         git init
+// git add README.md
+// git commit -m "first commit"
+// git remote add origin https://github.com/locliem08/Homework1.git
+// git push -u origin master
+</script>

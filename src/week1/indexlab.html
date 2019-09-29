@@ -1,0 +1,107 @@
+<html>
+<h1>
+    Currency Converter
+</h1>
+<input type="radio" name="currency" value="USD" checked=true> USD<br>
+<input type="radio" name="currency" value="VND"> VND<br>
+<input type="radio" name="currency" value="EUR"> EUR<br>
+<input type="radio" name="currency" value="QAR"> QAR<br>
+
+<input type="text" type="number" id="amount" />
+<button id="btnConvert">
+    Convert Currency
+</button>
+<span id="result"></span>
+
+<!-- <div>Number Guessing Game</div>
+<div id="message" style="font-weight: bold"></div>
+<input type="number" id="number">
+<button id="guessButton">Guess</button> -->
+
+</html>
+<script>
+    var radios = document.getElementsByName('currency');
+    var textResult = document.getElementById('result');
+
+
+    function callApi(currency) {
+        var xhr = new XMLHttpRequest();
+        let key_currency = currency + '_VND';
+        xhr.open('GET', 'https://free.currencyconverterapi.com/api/v6/convert?q=' + key_currency + '&compact=ultra&apiKey=eb243e3b59e63e7bf6b2');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                updateResults(JSON.parse(xhr.responseText), key_currency);
+            }
+            else {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        xhr.send();
+    }
+
+    function updateResults(response, key_currency) {
+        var userinput = document.getElementById('amount').value;
+        let temp = parseInt(userinput);
+        if (!isNaN(temp)) {
+            textResult.textContent = ' = ' + temp * response[key_currency] + ' VND';
+        }
+        else
+            alert('Không hợp lệ. Giá trị nhập phải là số.')
+    }
+
+    function convertCurency() {
+        let isValCheck = 'USD';
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                // do whatever you want with the checked radio
+                isValCheck = radios[i].value;
+                // only one radio can be logically checked, don't check the rest
+                break;
+            }
+        }
+        callApi(isValCheck);
+    }
+
+    var button = document.getElementById('btnConvert');
+    button.onclick = () => convertCurency();
+
+
+    // var results = Math.floor(Math.random() * 100);
+    // var countLimit = 10;
+    // function checkNum() {
+    //     var userinput = document.getElementById('number').value;
+    //     var textResults = document.getElementById('message');
+    //     let temp = parseInt(userinput);
+    //     if (countLimit == 0) {
+    //         alert('Bạn đã thua. Chơi lại nhé :P');
+    //         countLimit = 10;
+    //         results = Math.floor(Math.random() * 100);
+    //         textResults.style.background = 'white';
+    //         return;
+    //     }
+    //     if (isNaN(temp)) {
+    //         alert('Số không hợp lệ!', temp);
+    //         return;
+    //     } else {
+    //         countLimit--;
+    //         if (temp > results) {
+    //             textResults.textContent = 'Không đúng, số bạn nhập hiện đang lớn hơn. Lượt đoán còn: ' + countLimit;
+    //             textResults.style.background = 'red';
+    //         }
+    //         if (temp < results) {
+    //             textResults.textContent = 'Không đúng, số bạn nhập hiện đang nhỏ hơn. Lượt đoán còn: ' + countLimit;
+    //             textResults.style.background = 'aqua';
+    //         }
+    //         if (temp == results) {
+    //             results = Math.floor(Math.random() * 100);
+    //             countLimit = 10;
+    //             textResults.textContent = 'Win rồi. Bạn pro ghê :D';
+    //             textResults.style.background = 'white';
+
+    //         }
+
+    //     }
+    // }
+
+
+</script>
